@@ -61,8 +61,12 @@ public class Cmd implements Callable<Integer> {
     @Override
     public Integer call() {
         if (Objects.isNull(regConf)) {
-            log.error("registry properties not found, please specify -rp=path/to/registry.properties");
-            return 1;
+            if (App.registries.isEmpty()) {
+                log.error("registry properties not found, please specify -rp=path/to/registry.properties");
+                return 1;
+            } else {
+                log.warn("registry properties not specified, use built-in");
+            }
         } else {
             try (var is = new FileInputStream(regConf)) {
                 App.registries.load(is);
