@@ -1,14 +1,14 @@
 # publib
 
-Publish image from source registry to target registries.
+Publish image from source registry to target registry.
 
 ## Usage
 
 ```shell
 Usage: pubimg [-hV] -n=<name> -ns=<namespace> [-prd=<delay>] [-rp=<regConf>]
-              -s=<source> [<targets>...]
-Publish image from source registry to target registries
-      [<targets>...]    Target registry aliases
+              -s=<source> <target>
+Publish image from source registry to target registry
+      <target>          Target registry aliase
   -h, --help            Show this help message and exit.
   -n=<name>             Source name
       -ns=<namespace>   Target namespace
@@ -30,23 +30,17 @@ foo.password=foo
 bar.host=harbor.bar.com
 bar.username=bar
 bar.password=bar
-
-foobar.host=harbor.foobar.com
-foobar.username=foobar
-foobar.password=foobar
 ```
 
-The file contains the credentials for the source and target registries, where `foo`, `bar`, and `foobar` are the aliases
-of the registries.
+The file contains credentials for the source and target registries, with `foo` and `bar` as their aliases.
 
-2. Publish image `dev/qux:latest` from `harbor.foobar.com` to `harbor.foo.com` and `harbor.bar.com`:
+2. Publish image `dev/qux:latest` from `harbor.foo.com` to `harbor.bar.com`:
 
 ```shell
-pubimg -rp='./registry.properties' -n='dev/qux:latest' -s=foobar -ns=test foo bar
+pubimg -rp='./registry.properties' -n='dev/qux:latest' -s=foo -ns=test bar
 ```
 
-After all tasks are completed, you can find the image in `harbor.foo.com/test/qux:latest`
-and `harbor.bar.com/test/qux:latest`.
+After all tasks are completed, you can find the image in `harbor.bar.com/test/qux:latest`.
 
 ## How to build native executable
 
